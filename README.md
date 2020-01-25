@@ -30,6 +30,10 @@ pip list
 ```
 pip show [package]
 ```
+or
+```
+[package] --version
+```
 
 ### Update pip package
 ```
