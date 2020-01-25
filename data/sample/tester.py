@@ -5,7 +5,7 @@ import pytesseract
 if __name__ == '__main__':
         pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
         # Read image path from command line
-        imPath = 'data/sample/sample_block_crop.png'
+        imPath = 'data/sample/sample_block.png'
  
         # Define config parameters.
         # '-l eng'  for using the English language
