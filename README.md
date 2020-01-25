@@ -4,7 +4,7 @@ We are <Error 404>
 ## Pre-Flight Checklist
 * Update [pip](https://pypi.org/project/pip/) (20.0.1)
 * Update [git](https://git-scm.com/) (2.25.0)
-* Update [Python](https://www.python.org/) (3.8.1)
+* Update [Python](https://www.python.org/) (3.7.6 x64)
 * Install [VSCode](https://code.visualstudio.com/) (1.41)
 * Install [Github Desktop](https://desktop.github.com/) (2.2.4)
 * Install [Tensorflow](https://www.tensorflow.org/) (2.1)
