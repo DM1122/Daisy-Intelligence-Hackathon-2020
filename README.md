@@ -12,6 +12,7 @@ We are <Error 404>
 * Install [Matplotlib](https://pypi.org/project/matplotlib/) (3.1.2)
 * Install [Scikit-Learn](https://scikit-learn.org/stable/) (0.22.1)
 * Install [Scikit-Optimize](https://pypi.org/project/scikit-optimize/) (0.5.2)
+* Install [OpenCV](https://pypi.org/project/opencv-python/) (4.1.2.30)
 
 
 
@@ -56,3 +57,4 @@ More [info](https://www.theserverside.com/video/Follow-these-git-commit-message-
 ## Resources
 * Python Package Index: https://pypi.org/
 * Tensorflow Documentation: https://www.tensorflow.org/
+* OpenCV Documentation: https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_tutorials.html
