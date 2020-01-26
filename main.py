@@ -49,13 +49,10 @@ class Block:
                 foods.append(row)
         foods = [food[0] for food in foods]
 
-        name = None
         for item in foods:
-            maybe = self.text.find(item)
+            maybe = self.text.find(item.lower())
             if maybe != -1:
-                name = self.text[maybe:maybe+len(item)]
-        
-        return name
+                return item 
     
     def findUnitPromoPrice(self):
         #need to divide by least
@@ -77,29 +74,22 @@ class Block:
 
     def findUOM(self):
         #units 
-        units = ['ib']
+        units = []
         with open('data/units_dictionary.csv', newline='') as s:     
             reader1 = csv.reader(s, delimiter='\n') 
             for row in reader1:
-                if not 1:
-                    units.append(row)
+                units.append(row)
+        
+        units = [unit[0] for unit in units]
+        units.append('ib')
 
-        name1 = None
-        another = ''
         for item1 in units:
             maybe1 = self.text.find(item1)
             if maybe1 != -1:
-                name1 = self.text[maybe1:len(item1)]
-                name2 = self.text[:maybe1]
-                new = name2[::-1]
-                for i, c in enumerate(new):
-                    if c.isdigit():
-                        another = c
-                        break
-        na = str(another) + " " + str(name1)
-        
-        return na
-
+                if item1 == 'ib':
+                    item1 = 'lb'
+                return item1
+ 
     def findLeastUnitForPromo(self):
         least = 1
         result = self.text.find('save')
