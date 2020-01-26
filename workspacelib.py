@@ -3,7 +3,7 @@ import os
 import shutil
 
 
-workspace = ['temp/', 'temp/blocks/']
+workspace = ['temp/', 'temp/blocks/', 'temp/output/']
 
 verbose = True
 

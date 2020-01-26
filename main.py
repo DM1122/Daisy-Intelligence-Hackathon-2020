@@ -173,8 +173,7 @@ class Block:
 
         img = cv.imread(self.ref, 0)           # load in grayscale
         template = cv.imread(template_path,0)
-        print('IMAGE:',img)
-        print('TEMPLATE:',template)
+
 
         try:
             res = cv.matchTemplate(img, template, cv.TM_CCOEFF_NORMED)
@@ -298,7 +297,7 @@ if __name__ == '__main__':
     for block in blocks:
         data.append(block.toList())
     
-    with open('temp/output/output.csv', mode='w') as f:
+    with open('temp/output/output.csv', mode='w', newline='') as f:
         writer = csv.writer(f, delimiter=',')
         writer.writerows(data)
     #endregion
