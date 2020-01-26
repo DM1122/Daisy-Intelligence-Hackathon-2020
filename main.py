@@ -17,6 +17,85 @@ debug = False
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 
+class Block:
+    def __init__(self, ref):
+        self.ref = ref          # the path of the block image
+        self.text = self.blockToText()
+
+        self.flyer_name = os.path.dirname(self.ref)
+        self.product_name = self.findProductName()
+        self.unit_promo_price = self.findUnitPromoPrice()
+        self.uom = self.findUOM()
+        self.least_unit_for_promo = self.findLeastUnitForPromo()
+        self.save_per_unit = self.findSavePerUnit()
+        self.discount = self.findDiscount()
+        self.organic = self.searchLabel('data/labels/organic.png')
+
+    def blockToText(self):
+        img = PIL.Image.open(self.ref)
+        text = pytesseract.image_to_string(img)
+        return text
+
+    def findProductName(self):
+        pass
+
+    def findUnitPromoPrice(self):
+        pass
+
+    def findUOM(self):
+        pass
+
+    def findLeastUnitForPromo(self):
+        pass
+
+    def findSavePerUnit(self)
+        pass
+
+    def findDiscount(self):
+        pass
+
+    def searchLabel(self, template_path):
+        '''
+        Returns True or False if template is found in image.
+        '''
+        threshold = 0.9
+
+
+        img = cv2.imread(self.ref, 0)           # load in grayscale
+        template = cv2.imread(template_path,0)
+
+        res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+        
+        loc = np.where(res >= threshold)
+
+        if loc[0].shape[0] != 0:
+            flag = True
+        else:
+            flag = False
+
+
+        if debug:
+
+            for point in zip(*loc[::-1]):
+                cv2.imwrite(getEmptyPath('res','.png'), img)
+                cv2.rectangle(img, point, (point[0]+template.shape[1], point[1]+template.shape[0]), (0,0,255), 2)
+
+            plt.subplot(1,2,1)
+            plt.title('Convolution')
+            plt.imshow(res, cmap = 'gray')
+            
+            plt.subplot(1,2,2)
+            plt.title('Detection')
+            plt.imshow(img, cmap = 'gray')
+            
+            plt.show()
+
+
+        return flag
+
+    def toList(self):
+        return [self.flyer_name, self.product_name, self.unit_promo_price, self.uom, self.least_unit_for_promo, self.save_per_unit, self.discount, self.organic]
+
 def segmentFlyer(image_path):
     '''
     Segements flyer into its consituent blocks.
@@ -67,51 +146,6 @@ def segmentFlyer(image_path):
         plt.show()
 
 
-def searchImage(img_path, template_path):
-    '''
-    Returns True or False if template is found in image.
-    '''
-    threshold = 0.9
-
-
-    img = cv2.imread(img_path, 0)           # load in grayscale
-    template = cv2.imread(template_path,0)
-
-    res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
-    
-    loc = np.where(res >= threshold)
-
-    
-    if loc[0].shape[0] != 0:
-        flag = True
-    else:
-        flag = False
-
-
-    if debug:
-
-        for point in zip(*loc[::-1]):
-            cv2.imwrite(getEmptyPath('res','.png'), img)
-            cv2.rectangle(img, point, (point[0]+template.shape[1], point[1]+template.shape[0]), (0,0,255), 2)
-
-        plt.subplot(1,2,1)
-        plt.title('Convolution')
-        plt.imshow(res, cmap = 'gray')
-        
-        plt.subplot(1,2,2)
-        plt.title('Detection')
-        plt.imshow(img, cmap = 'gray')
-        
-        plt.show()
-
-
-    return flag
-
-
-def blockToText(block_path):
-    img = PIL.Image.open(block_path)
-    output = pytesseract.image_to_string(img)
-    print(output)
 
 
 if __name__ == '__main__':
@@ -131,12 +165,17 @@ if __name__ == '__main__':
     #endregion
 
     #region OCR
-    #blockToText()
+    blocks = []
+
+    file_dirs = os.listdir('temp/blocks')
+    bar = progress.bar.Bar('Instantiating blocks', max=len(file_dirs))
+    for file_dir in file_dirs:
+        block_paths = os.listdir('temp/blocks/'+file_dir)
+        for block_path in block_paths:
+            blocks.append(Block(ref='temp/blocks/'+file_dir+'/'+block_path))
+        bar.next()
+    bar.finish()
+
 
     #endregion
 
-
-    #region Semantization
-
-
-    #endregion
