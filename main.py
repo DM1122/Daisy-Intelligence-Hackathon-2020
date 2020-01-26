@@ -45,7 +45,6 @@ class Block:
         with open('data/product_dictionary.csv', newline='') as f:     
             reader = csv.reader(f, delimiter=' ')
             for row in reader:
-                if not 1:
                     foods.append(row)
         
         name = None
@@ -95,7 +94,7 @@ class Block:
                     if c.isdigit():
                         another = c
                         break
-        na = str(another) + " " + str(name1)
+        na = str(another) + " " + name1
         
         return na
 
