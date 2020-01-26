@@ -77,7 +77,7 @@ def clean_it_up(str1, organic, week):
    
     #product name 
     foods = []
-    with open('product_dictionary.csv', newline='') as f:     
+    with open('data/sample/product_dictionary.csv', newline='') as f:     
         reader = csv.reader(f, delimiter=' ')
         for row in reader:
             if not 1:
@@ -92,13 +92,14 @@ def clean_it_up(str1, organic, week):
     
     #units 
     units = []
-    with open('units_dictionary.csv', newline='') as s:     
+    with open('data/sample/units_dictionary.csv', newline='') as s:     
         reader1 = csv.reader(s, delimiter=' ')
         for row in reader1:
             if not 1:
                 units.append(row)
 
     name1 = None
+    another = ''
     for item1 in units:
         maybe1 = stri.find(item)
         if maybe1 != -1:
@@ -109,8 +110,10 @@ def clean_it_up(str1, organic, week):
                 if c.isdigit():
                     another = c
                     break
-    d['uom'] = str(another + " " + name1)
+    na = str(another) + " " + str(name1)
+    d['uom'] = na
     
+    unit = 0
     #Unit promo price - will need to import variable 'num' from save_per_unit
     if ('half' and 'off' in stri == True) or ('buy' and 'one' and 'get' and 'free' in stri == True):
         unit = num
