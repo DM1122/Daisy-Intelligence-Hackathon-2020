@@ -7,40 +7,18 @@ def clean_it_up(str1, organic, week):
     stri = str1.lower()
     d = {}
     d['date'] = week
-    #d['least_unit_for_promo'] = least
     d['organic'] = organic
 
-    #Discount
-    #2/$5, Save $6.98 on 2, output value = $6.98/$11.98 = 0.58
-    #discount = save_price/(discount_price + save_price)
+    # I don't know how to find least_unit_for_promo
+    # d['least_unit_for_promo'] = least
 
-    #save_per_unit
-    #Save $3.5 on 2, output value – $1.75
+    #Discount (ex. 2/$5, Save $6.98 on 2, output value = $6.98/$11.98 = 0.58)
+    #discount = save_price/(discount_price + save_price) - but will have to find again b/c not divide by 2
+
+    #save_per_unit (ex. save $3.5 on 2, output value – $1.75)
     result = stri.find('save')
     other = stri.find('off')
     num = None
-    if result != -1 and ('/' in stri == False):
-        res = stri.find('/')
-        str2 = stri[result:]
-        if ('on' in str2) == True: 
-            som = str2.find('$')
-            str3 = str2[som:]
-            idk = str3.find(' ')
-            final = float(str3[1:idk])
-            jk = str3[idk:]
-            for i, c in enumerate(jk):
-                if c.isdigit():
-                    times = c
-                    break
-            num = final / times
-
-        else: 
-            som1 = str2.find('$')
-            str3_1 = str2[som1:]
-            idk1 = str3_1.find(' ')
-            final1 = float(str3_1[1:idk1])
-            num = final1
-    
     if other != -1:
         str_s = str2[:other]
         s = str_s.find('$')
@@ -50,6 +28,27 @@ def clean_it_up(str1, organic, week):
                     times = c
                     break
         num = times
+
+    elif result != -1 and ('/' in stri == False):
+        str2 = stri[result:]
+        if 'on' in str2 == True: 
+            som = str2.find('$')
+            str3 = str2[som:]
+            idk = str3.find(' ')
+            final = float(str3[1:idk])
+            jk = str3[idk:]
+            for i, c in enumerate(jk):
+                if c.isdigit():
+                    times = c
+                    break
+            num = final / times'
+
+        else: 
+            som1 = str2.find('$')
+            str3_1 = str2[som1:]
+            idk1 = str3_1.find(' ')
+            final1 = float(str3_1[1:idk1])
+            num = final1
     d['save_per_unit'] = num
    
     #product name 
@@ -66,7 +65,8 @@ def clean_it_up(str1, organic, week):
         if maybe != -1:
             name = stri[maybe:len(item)]
             d['product name'] = name
-    #units
+    
+    #units 
     units = []
     with open('units_dictionary.csv', newline='') as s:     
         reader1 = csv.reader(s, delimiter=' ')
@@ -82,7 +82,7 @@ def clean_it_up(str1, organic, week):
             #add numbers before unit (see example output)
             d['uom'] = name1
     
-    #Unit promo price:
+    #Unit promo price - will need to import variable 'num' from save_per_unit
     if ('half' and 'off' in stri == True) or ('buy' and 'one' and 'get' and 'free' in stri == True):
         unit = num
     #...
