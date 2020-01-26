@@ -22,14 +22,18 @@ def clean_it_up(str1, organic, week):
     if result != -1 and ('/' in stri == False):
         res = stri.find('/')
         str2 = stri[result:]
-        if 'on' in str2 == True: 
+        if ('on' in str2) == True: 
+            som = str2.find('$')
+            str3 = str2[som:]
+            idk = str3.find(' ')
+            final = float(str3[1:idk])
             jk = str3[idk:]
             for i, c in enumerate(jk):
                 if c.isdigit():
                     times = c
                     break
             num = final / times
-        
+
         else: 
             som1 = str2.find('$')
             str3_1 = str2[som1:]
