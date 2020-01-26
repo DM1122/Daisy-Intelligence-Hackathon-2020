@@ -35,9 +35,9 @@ def clean_it_up(str1, organic, week):
                 times = c
                 break
     save_price = times
-    discount_price = #same as Unit promo price, so get from there
-    discount = save_price/(discount_price + save_price)
-    d['discount'] = discount
+    #discount_price = same as Unit promo price, so get from there
+    #discount = save_price/(discount_price + save_price)
+    #d['discount'] = discount
     
     #save_per_unit (ex. save $3.5 on 2, output value – $1.75)
     result = stri.find('save')
@@ -109,14 +109,15 @@ def clean_it_up(str1, organic, week):
                 if c.isdigit():
                     another = c
                     break
-            d['uom'] = str(another + " " + name1)
+    d['uom'] = str(another + " " + name1)
     
     #Unit promo price - will need to import variable 'num' from save_per_unit
     if ('half' and 'off' in stri == True) or ('buy' and 'one' and 'get' and 'free' in stri == True):
         unit = num
-    else: 
+    #else: 
         #this is the one that gives us random letters and shit sooooooo
     d['unit_promo_price'] = unit
+    return d
 
 if __name__ == '__main__':
         pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
@@ -135,3 +136,5 @@ if __name__ == '__main__':
  
         # Print recognized text
         print(text)
+
+        print(clean_it_up(text, 0, 'week_1'))
