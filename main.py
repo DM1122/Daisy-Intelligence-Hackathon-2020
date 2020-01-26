@@ -23,8 +23,8 @@ class Block:
     def __init__(self, ref):
         self.ref = ref          # the path of the block image
         self.text = self.blockToText().lower()
-
-        self.flyer_name = workspacelib.splitall(self.ref)[-2]
+        path = workspacelib.splitall(self.ref)[-2]
+        self.flyer_name = path[:-4]
         print(self.flyer_name)
         self.product_name = self.findProductName()
         self.unit_promo_price = self.findUnitPromoPrice()
@@ -300,6 +300,7 @@ if __name__ == '__main__':
     
     with open('temp/output/output.csv', mode='w', newline='') as f:
         writer = csv.writer(f, delimiter=',')
+        writer.writerow(['flyer_name', 'product_name', 'unit_promo_price', 'uom', 'least_unit_for_promo', 'save_per_unit', 'discount', 'organic'])
         writer.writerows(data)
     #endregion
 
