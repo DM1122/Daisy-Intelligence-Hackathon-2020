@@ -1,10 +1,20 @@
+import csv
 import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+import PIL
+import progress.bar
+import pytesseract
+
+import workspacelib
 
 
 
-debug = True
+database = 'data/flyers/'
+debug = False
+
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
 
 
 def segmentFlyer(image_path):
@@ -27,10 +37,14 @@ def segmentFlyer(image_path):
     cv.drawContours(contoured, contours, -1, (0,255,0), 3)
 
     for cnt in contours:
-        x,y,w,h = cv2.boundingRect(cnt)
+        x, y, w, h = cv.boundingRect(cnt)
         block = img[y:y+h, x:x+w]
 
-        cv2.imwrite(getEmptyPath('block','.png'), block)
+        if not block.shape[0] < 256:            # filter out garbage
+            image_name = os.path.basename(image_path)
+            save_path = workspacelib.getAvailablePath('block','.png', output_path='temp/blocks/'+image_name+'/')
+            cv.imwrite(save_path, block)
+            
 
     if debug:
         plt.subplot(1,4,1)
@@ -94,27 +108,35 @@ def searchImage(img_path, template_path):
     return flag
 
 
-def getEmptyPath(file_name, file_ext, output_path='output'):
-    if not os.path.exists(output_path):
-        os.mkdir(output_path)
-
-    i = 0
-
-    while os.path.exists(output_path + '/' + file_name + str(i) + file_ext):
-        print
-        i += 1
-    
-    empty_path = output_path + '/' + file_name + str(i) + file_ext
-
-
-    return empty_path
-
+def blockToText(block_path):
+    img = PIL.Image.open(block_path)
+    output = pytesseract.image_to_string(img)
+    print(output)
 
 
 if __name__ == '__main__':
-    segmentFlyer('data/sample/sample_flyer.jpg')
+    workspacelib.clear()
+    workspacelib.setup()
+    
 
-    result = searchImage(img_path='data/sample/sample_block_2.png',
-                         template_path='data/labels/organic.png')
+    #region Segmentation
+    file_paths = os.listdir(database)
+    bar = progress.bar.Bar('Segmenting Flyers', max=len(file_paths))
+    for file_path in file_paths:
+        image_path = database+file_path
+        segmentFlyer(image_path)
 
-    print('Result:',result)
+        bar.next()
+    bar.finish()
+    #endregion
+
+    #region OCR
+    #blockToText()
+
+    #endregion
+
+
+    #region Semantization
+
+
+    #endregion
