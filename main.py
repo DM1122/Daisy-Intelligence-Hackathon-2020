@@ -48,7 +48,7 @@ class Block:
     def findLeastUnitForPromo(self):
         pass
 
-    def findSavePerUnit(self)
+    def findSavePerUnit(self):
         pass
 
     def findDiscount(self):
@@ -175,7 +175,16 @@ if __name__ == '__main__':
             blocks.append(Block(ref='temp/blocks/'+file_dir+'/'+block_path))
         bar.next()
     bar.finish()
+    #endregion
 
+    #region Output
+    data = []
+    for block in blocks:
+        data.append(block.toList())
+    
+    with open('temp/output/output.csv', mode='w') as f:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerows(data)
 
     #endregion
 
