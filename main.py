@@ -57,13 +57,17 @@ class Block:
     def findUnitPromoPrice(self):
         unit = 0
         #Unit promo price - will need to import variable 'num' from save_per_unit
-        if ('half' and 'off' in stri == True) or ('buy' and 'one' and 'get' and 'free' in stri == True):
-            unit = num
-        #else: 
-            #this is the one that gives us random letters and shit sooooooo
-        d['unit_promo_price'] = unit
-        
-        return d
+        if ('half' and 'off' in self.text == True) or ('buy' and 'one' and 'get' and 'free' in self.text == True):
+            unit = self.save_per_unit
+        else: 
+            start = self.text.find('$')
+            nums = ['0','1','2','3','4','5','6','7','8','9','.']
+            i = start
+            while self.text[i] in nums:
+                i += 1
+            
+            unit = self.text[start:i]
+        return unit
 
     def findUOM(self):
         #units 
