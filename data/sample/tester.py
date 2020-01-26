@@ -14,6 +14,7 @@ def clean_it_up(str1, organic, week):
 
     #Discount (ex. 2/$5, Save $6.98 on 2, output value = $6.98/$11.98 = 0.58)
     #discount = save_price/(discount_price + save_price) - but will have to find again b/c not divide by 2
+    #d['discount'] = discount
 
     #save_per_unit (ex. save $3.5 on 2, output value – $1.75)
     result = stri.find('save')
@@ -41,7 +42,7 @@ def clean_it_up(str1, organic, week):
                 if c.isdigit():
                     times = c
                     break
-            num = final / times'
+            num = final / times
 
         else: 
             som1 = str2.find('$')
@@ -79,13 +80,19 @@ def clean_it_up(str1, organic, week):
         maybe1 = stri.find(item)
         if maybe1 != -1:
             name1 = stri[maybe1:len(item1)]
-            #add numbers before unit (see example output)
-            d['uom'] = name1
+            name2 = stri[:maybe1]
+            new = name2[::-1]
+            for i, c in enumerate(new):
+                if c.isdigit():
+                    another = c
+                    break
+            d['uom'] = str(another + " " + name1)
     
     #Unit promo price - will need to import variable 'num' from save_per_unit
     if ('half' and 'off' in stri == True) or ('buy' and 'one' and 'get' and 'free' in stri == True):
         unit = num
-    #...
+    else: 
+        #this is the one that gives us random letters and shit sooooooo
     d['unit_promo_price'] = unit
 
 if __name__ == '__main__':
