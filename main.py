@@ -20,7 +20,7 @@ pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tessera
 class Block:
     def __init__(self, ref):
         self.ref = ref          # the path of the block image
-        self.text = self.blockToText()
+        self.text = self.blockToText().lower()
 
         self.flyer_name = os.path.dirname(self.ref)
         self.product_name = self.findProductName()
@@ -37,22 +37,128 @@ class Block:
         return text
 
     def findProductName(self):
-        pass
+        #product name 
+        foods = []
+        with open('data/sample/product_dictionary.csv', newline='') as f:     
+            reader = csv.reader(f, delimiter=' ')
+            for row in reader:
+                if not 1:
+                    foods.append(row)
+        
+        name = None
+        for item in foods:
+            maybe = stri.find(item)
+            if maybe != -1:
+                name = stri[maybe:len(item)]
+        
+        return self.name
+    
 
     def findUnitPromoPrice(self):
-        pass
+        unit = 0
+        #Unit promo price - will need to import variable 'num' from save_per_unit
+        if ('half' and 'off' in stri == True) or ('buy' and 'one' and 'get' and 'free' in stri == True):
+            unit = num
+        #else: 
+            #this is the one that gives us random letters and shit sooooooo
+        d['unit_promo_price'] = unit
+        
+        return d
 
     def findUOM(self):
-        pass
+        #units 
+        units = []
+        with open('data/sample/units_dictionary.csv', newline='') as s:     
+            reader1 = csv.reader(s, delimiter=' ')
+            for row in reader1:
+                if not 1:
+                    units.append(row)
+
+        name1 = None
+        another = ''
+        for item1 in units:
+            maybe1 = self.text.find(item)
+            if maybe1 != -1:
+                name1 = self.text[maybe1:len(item1)]
+                name2 = self.text[:maybe1]
+                new = name2[::-1]
+                for i, c in enumerate(new):
+                    if c.isdigit():
+                        another = c
+                        break
+        na = str(another) + " " + str(name1)
+        
+        return na
 
     def findLeastUnitForPromo(self):
-        pass
+        least = 1
+        result = self.text.find('save')
+        if result != -1:
+            str2 = self.text[result:]
+            if 'on' in str2 == True: 
+                som = str2.find('$')
+                str3 = str2[som:]
+                idk = str3.find(' ')
+                final = float(str3[1:idk])
+                jk = str3[idk:]
+                for i, c in enumerate(jk):
+                    if c.isdigit():
+                        least = c
+                        break
+        
+        return least
 
     def findSavePerUnit(self):
-        pass
+        #save_per_unit (ex. save $3.5 on 2, output value – $1.75)
+        result = self.text.find('save')
+        other = self.text.find('off')
+        num = None
+        if other != -1:
+            str_s = self.text[:other]
+            s = str_s.find('$')
+            fin = str_s[s:]
+            for i, c in enumerate(fin):
+                    if c.isdigit():
+                        num = c
+                        break
+        
+        elif result != -1 and ('/' in self.text == False):
+            str2 = self.text[result:]
+            if 'on' in str2 == True: 
+                som = str2.find('$')
+                str3 = str2[som:]
+                idk = str3.find(' ')
+                final = float(str3[1:idk])
+                jk = str3[idk:]
+                for i, c in enumerate(jk):
+                    if c.isdigit():
+                        times = c
+                        break
+                num = final / times
+
+            else: 
+                som1 = str2.find('$')
+                str3_1 = str2[som1:]
+                idk1 = str3_1.find(' ')
+                final1 = float(str3_1[1:idk1])
+                num = final1
+        
+        return num
+   
 
     def findDiscount(self):
-        pass
+        #Discount (ex. 2/$5, Save $6.98 on 2, output value = $6.98/$11.98 = 0.58)
+        result = self.text.find('save')
+        if result != -1:
+            str2 = self.text[result:]
+            for i, c in enumerate(str2):
+                if c.isdigit():
+                    save_price = c
+                    break
+        
+        
+        discount = save_price/(self.discount + save_price)
+        d['discount'] = discount
 
     def searchLabel(self, template_path):
         '''
@@ -95,6 +201,7 @@ class Block:
 
     def toList(self):
         return [self.flyer_name, self.product_name, self.unit_promo_price, self.uom, self.least_unit_for_promo, self.save_per_unit, self.discount, self.organic]
+
 
 def segmentFlyer(image_path):
     '''
@@ -185,6 +292,5 @@ if __name__ == '__main__':
     with open('temp/output/output.csv', mode='w') as f:
         writer = csv.writer(f, delimiter=',')
         writer.writerows(data)
-
     #endregion
 
