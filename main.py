@@ -40,15 +40,17 @@ class Block:
         #product name 
         foods = []
         with open('data/product_dictionary.csv', newline='') as f:     
-            reader = csv.reader(f, delimiter=' ')
+            reader = csv.reader(f, delimiter='\n')
             for row in reader:
-                    foods.append(row)
-        
+
+                foods.append(row)
+        foods = [food[0] for food in foods]
+
         name = None
         for item in foods:
             maybe = self.text.find(item)
             if maybe != -1:
-                name = self.text[maybe:len(item)]
+                name = self.text[maybe:maybe+len(item)]
         
         return name
     
@@ -74,7 +76,7 @@ class Block:
         #units 
         units = ['ib']
         with open('data/units_dictionary.csv', newline='') as s:     
-            reader1 = csv.reader(s, delimiter=' ')
+            reader1 = csv.reader(s, delimiter='\n') 
             for row in reader1:
                 if not 1:
                     units.append(row)
@@ -91,7 +93,7 @@ class Block:
                     if c.isdigit():
                         another = c
                         break
-        na = str(another) + " " + name1
+        na = str(another) + " " + str(name1)
         
         return na
 
