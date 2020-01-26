@@ -3,9 +3,11 @@ import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import pathlib
 import PIL
 import progress.bar
 import pytesseract
+
 
 import workspacelib
 
@@ -22,7 +24,8 @@ class Block:
         self.ref = ref          # the path of the block image
         self.text = self.blockToText().lower()
 
-        self.flyer_name = os.path.dirname(self.ref)
+        self.flyer_name = workspacelib.splitall(self.ref)[-2]
+        print(self.flyer_name)
         self.product_name = self.findProductName()
         self.unit_promo_price = self.findUnitPromoPrice()
         self.uom = self.findUOM()
@@ -182,9 +185,9 @@ class Block:
         loc = np.where(res >= threshold)
 
         if loc[0].shape[0] != 0:
-            flag = True
+            flag = 1
         else:
-            flag = False
+            flag = 0
 
 
         if debug:
