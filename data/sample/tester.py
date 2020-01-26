@@ -9,19 +9,42 @@ def clean_it_up(str1, organic, week):
     d['date'] = week
     d['organic'] = organic
 
-    # I don't know how to find least_unit_for_promo
-    # d['least_unit_for_promo'] = least
+    #least_unit_for_promo
+    least = 1
+    result = stri.find('save')
+    if result != -1:
+        str2 = stri[result:]
+        if 'on' in str2 == True: 
+            som = str2.find('$')
+            str3 = str2[som:]
+            idk = str3.find(' ')
+            final = float(str3[1:idk])
+            jk = str3[idk:]
+            for i, c in enumerate(jk):
+                if c.isdigit():
+                    least = c
+                    break
+    d['least_unit_for_promo'] = least
 
     #Discount (ex. 2/$5, Save $6.98 on 2, output value = $6.98/$11.98 = 0.58)
-    #discount = save_price/(discount_price + save_price) - but will have to find again b/c not divide by 2
-    #d['discount'] = discount
-
+    result = stri.find('save')
+    if result != -1:
+        str2 = stri[result:]
+        for i, c in enumerate(str2):
+            if c.isdigit():
+                times = c
+                break
+    save_price = times
+    discount_price = #same as Unit promo price, so get from there
+    discount = save_price/(discount_price + save_price)
+    d['discount'] = discount
+    
     #save_per_unit (ex. save $3.5 on 2, output value – $1.75)
     result = stri.find('save')
     other = stri.find('off')
     num = None
     if other != -1:
-        str_s = str2[:other]
+        str_s = stri[:other]
         s = str_s.find('$')
         fin = str_s[s:]
         for i, c in enumerate(fin):
@@ -29,7 +52,7 @@ def clean_it_up(str1, organic, week):
                     times = c
                     break
         num = times
-
+    
     elif result != -1 and ('/' in stri == False):
         str2 = stri[result:]
         if 'on' in str2 == True: 
