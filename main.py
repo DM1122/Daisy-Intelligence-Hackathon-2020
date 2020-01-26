@@ -28,7 +28,7 @@ class Block:
         self.uom = self.findUOM()
         self.least_unit_for_promo = self.findLeastUnitForPromo()
         self.save_per_unit = self.findSavePerUnit()
-        self.discount = self.findDiscount()
+        self.discount = None
         self.organic = self.searchLabel('data/labels/organic.png')
 
     def blockToText(self):
@@ -53,7 +53,6 @@ class Block:
         
         return name
     
-
     def findUnitPromoPrice(self):
         unit = 0
         #Unit promo price - will need to import variable 'num' from save_per_unit
@@ -62,11 +61,14 @@ class Block:
         else: 
             start = self.text.find('$')
             nums = ['0','1','2','3','4','5','6','7','8','9','.']
+            if start == -1:
+                return unit
             i = start
-            while self.text[i] in nums:
+            while self.text[i]  in nums:
+                print(self.text)
                 i += 1
             
-            unit = self.text[start:i]
+            unit = self.text[start:i]           # always returns zero
         return unit
 
     def findUOM(self):
@@ -148,7 +150,6 @@ class Block:
         
         return num
    
-
     def findDiscount(self):
         #Discount (ex. 2/$5, Save $6.98 on 2, output value = $6.98/$11.98 = 0.58)
         result = self.text.find('save')
@@ -170,10 +171,10 @@ class Block:
         threshold = 0.9
 
 
-        img = cv2.imread(self.ref, 0)           # load in grayscale
-        template = cv2.imread(template_path,0)
+        img = cv.imread(self.ref, 0)           # load in grayscale
+        template = cv.imread(template_path,0)
 
-        res = cv2.matchTemplate(img, template, cv2.TM_CCOEFF_NORMED)
+        res = cv.matchTemplate(img, template, cv.TM_CCOEFF_NORMED)
         
         loc = np.where(res >= threshold)
 
