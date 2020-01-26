@@ -39,7 +39,7 @@ class Block:
     def findProductName(self):
         #product name 
         foods = []
-        with open('data/sample/product_dictionary.csv', newline='') as f:     
+        with open('data/product_dictionary.csv', newline='') as f:     
             reader = csv.reader(f, delimiter=' ')
             for row in reader:
                 if not 1:
@@ -47,11 +47,11 @@ class Block:
         
         name = None
         for item in foods:
-            maybe = stri.find(item)
+            maybe = self.text.find(item)
             if maybe != -1:
-                name = stri[maybe:len(item)]
+                name = self.text[maybe:len(item)]
         
-        return self.name
+        return name
     
 
     def findUnitPromoPrice(self):
@@ -71,8 +71,8 @@ class Block:
 
     def findUOM(self):
         #units 
-        units = []
-        with open('data/sample/units_dictionary.csv', newline='') as s:     
+        units = ['ib']
+        with open('data/units_dictionary.csv', newline='') as s:     
             reader1 = csv.reader(s, delimiter=' ')
             for row in reader1:
                 if not 1:
@@ -81,7 +81,7 @@ class Block:
         name1 = None
         another = ''
         for item1 in units:
-            maybe1 = self.text.find(item)
+            maybe1 = self.text.find(item1)
             if maybe1 != -1:
                 name1 = self.text[maybe1:len(item1)]
                 name2 = self.text[:maybe1]
@@ -103,7 +103,6 @@ class Block:
                 som = str2.find('$')
                 str3 = str2[som:]
                 idk = str3.find(' ')
-                final = float(str3[1:idk])
                 jk = str3[idk:]
                 for i, c in enumerate(jk):
                     if c.isdigit():
@@ -162,7 +161,7 @@ class Block:
         
         
         discount = save_price/(self.discount + save_price)
-        d['discount'] = discount
+        return  discount
 
     def searchLabel(self, template_path):
         '''
