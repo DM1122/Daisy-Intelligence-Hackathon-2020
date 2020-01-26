@@ -39,7 +39,7 @@ class Block:
     def findProductName(self):
         #product name 
         foods = []
-        with open('data/sample/product_dictionary.csv', newline='') as f:     
+        with open('data/product_dictionary.csv', newline='') as f:     
             reader = csv.reader(f, delimiter=' ')
             for row in reader:
                 if not 1:
@@ -47,9 +47,9 @@ class Block:
         
         name = None
         for item in foods:
-            maybe = stri.find(item)
+            maybe = self.text.find(item)
             if maybe != -1:
-                name = stri[maybe:len(item)]
+                name = self.text[maybe:len(item)]
         
         return self.name
     
@@ -68,7 +68,7 @@ class Block:
     def findUOM(self):
         #units 
         units = []
-        with open('data/sample/units_dictionary.csv', newline='') as s:     
+        with open('data/units_dictionary.csv', newline='') as s:     
             reader1 = csv.reader(s, delimiter=' ')
             for row in reader1:
                 if not 1:
