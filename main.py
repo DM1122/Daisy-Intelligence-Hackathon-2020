@@ -55,8 +55,8 @@ class Block:
     
 
     def findUnitPromoPrice(self):
+        #need to divide by least
         unit = 0
-        #Unit promo price - will need to import variable 'num' from save_per_unit
         if ('half' and 'off' in self.text == True) or ('buy' and 'one' and 'get' and 'free' in self.text == True):
             unit = self.save_per_unit
         else: 
@@ -66,7 +66,9 @@ class Block:
             while self.text[i] in nums:
                 i += 1
             
-            unit = self.text[start:i]
+
+            unit1 = float(self.text[start:i])
+            unit = unit1/float(self.least_unit_for_promo)
         return unit
 
     def findUOM(self):
@@ -112,7 +114,6 @@ class Block:
         return least
 
     def findSavePerUnit(self):
-        #save_per_unit (ex. save $3.5 on 2, output value – $1.75)
         result = self.text.find('save')
         other = self.text.find('off')
         num = None
@@ -156,11 +157,11 @@ class Block:
             str2 = self.text[result:]
             for i, c in enumerate(str2):
                 if c.isdigit():
-                    save_price = c
+                    save_price = float(c)
                     break
         
-        
-        discount = save_price/(self.discount + save_price)
+        yeah = float(self.unit_promo_price)*float(self.least_unit_for_promo)
+        discount = save_price/(yeah + save_price)
         return  discount
 
     def searchLabel(self, template_path):
