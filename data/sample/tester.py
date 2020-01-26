@@ -1,12 +1,29 @@
 import cv2
 import sys
 import pytesseract
+import csv
 
 def clean_it_up(str, organic, week):
     '''
     (string from image, 0/1, week_1) --> (dict)
-    {'product name': 'chicken', 'price': 1.99, 'savings': 0.5, 'organic': 0}
+    {'date': 'week_1', product name': 'chicken', 'unit_promo_price': '$2.5',
+    'uom': 'lb','least_unit_for_promo': 1,'save_per_unit': '$1.75',
+    'discount': 0.58,'organic': 0}
     '''
+    foods = []
+    with open('product_dictionary.csv', newline='') as f:     
+        reader = csv.reader(f, delimiter=' ')
+        for row in reader:
+            if not 1:
+                foods.append(row)
+    d = {}
+    d['date'] = week
+    for item in foods:
+        maybe = str.find(item)
+        for maybe not -1:
+            name = str[maybe:len(item)]
+            d['product name'] = name
+
 
 
 if __name__ == '__main__':
