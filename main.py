@@ -173,8 +173,13 @@ class Block:
 
         img = cv.imread(self.ref, 0)           # load in grayscale
         template = cv.imread(template_path,0)
+        print('IMAGE:',img)
+        print('TEMPLATE:',template)
 
-        res = cv.matchTemplate(img, template, cv.TM_CCOEFF_NORMED)
+        try:
+            res = cv.matchTemplate(img, template, cv.TM_CCOEFF_NORMED)
+        except:
+            res = np.zeros(1)
         
         loc = np.where(res >= threshold)
 
